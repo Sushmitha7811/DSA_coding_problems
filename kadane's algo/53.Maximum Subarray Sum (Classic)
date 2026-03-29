@@ -1,0 +1,76 @@
+Question:
+         Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+Example 1:
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+
+Example 2:
+Input: nums = [1]
+Output: 1
+Explanation: The subarray [1] has the largest sum 1.
+
+Example 3:
+Input: nums = [5,4,-1,7,8]
+Output: 23
+Explanation: The subarray [5,4,-1,7,8] has the largest sum 23.
+ 
+
+Constraints:
+1 <= nums.length <= 105
+-104 <= nums[i] <= 104
+
+Approaches:
+
+1) Brute Force
+
+  We literally check every possible subarray and calculate its sum.
+  A subarray is any continuous part of the array.
+  So we:
+        Pick a starting index i
+        Pick an ending index j
+        Calculate sum from i to j
+        Keep track of the maximum sum found
+  Use two loops:
+        Outer loop → starting index
+        Inner loop → ending index
+        Maintain a running sum instead of recalculating every time (small optimization)
+
+ Code:
+  def maxSubArray(nums):
+    n = len(nums)
+    max_sum = float('-inf')
+
+    for i in range(n):
+        current_sum = 0
+        for j in range(i, n):
+            current_sum += nums[j]
+            max_sum = max(max_sum, current_sum)
+
+    return max_sum
+
+ Time Complexity
+     Outer loop → n
+     Inner loop → n
+    Total → O(n²)
+    (If you calculated sum separately every time → it would be O(n³) 💀)
+
+ Space Complexity
+     O(1) → no extra space used
+
+Reality Check
+      This works… but , it’s too slow for large inputs
+
+
+2) Kadane's Algo
+   class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        add = end_sum = nums[0]
+        for i in range(1, len(nums)):
+            end_sum = max(end_sum + nums[i], nums[i])
+            add = max(end_sum, add)
+
+        return add
+
+    
