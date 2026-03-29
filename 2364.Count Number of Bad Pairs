@@ -1,0 +1,72 @@
+Question:
+You are given a 0-indexed integer array nums. A pair of indices (i, j) is a bad pair if i < j and j - i != nums[j] - nums[i].
+Return the total number of bad pairs in nums.
+
+Example 1:
+Input: nums = [4,1,3,3]
+Output: 5
+Explanation: The pair (0, 1) is a bad pair since 1 - 0 != 1 - 4.
+The pair (0, 2) is a bad pair since 2 - 0 != 3 - 4, 2 != -1.
+The pair (0, 3) is a bad pair since 3 - 0 != 3 - 4, 3 != -1.
+The pair (1, 2) is a bad pair since 2 - 1 != 3 - 1, 1 != 2.
+The pair (2, 3) is a bad pair since 3 - 2 != 3 - 3, 1 != 0.
+There are a total of 5 bad pairs, so we return 5.
+
+Example 2:
+Input: nums = [1,2,3,4,5]
+Output: 0
+Explanation: There are no bad pairs.
+ 
+Constraints:
+1 <= nums.length <= 105
+1 <= nums[i] <= 109
+
+Topics:
+Staff; Array; Hash Table; Math; Counting
+
+Solutions:
+
+1) Brute Force Approach:
+class Solution:
+    def countBadPairs(self, nums: List[int]) -> int:
+        count = 0
+        for i in range(len(nums)):
+            first = nums[i] - i
+            for j in range(i+1,len(nums)):
+                if first != nums[j] - j : 
+                    count += 1
+        
+        return count
+
+   Output:
+   Time Limit Exceeded -- 52 / 65 testcases passed
+   Cons:
+   The nested loop = O(n²) → instant TLE when n gets big.
+
+2) Using Hash Table: [Time: O(n) Space: O(n)]
+from collections import defaultdict                        #We use a hashmap (count) to store frequency of values 
+class Solution:
+    def countBadPairs(self, nums: List[int]) -> int:
+        n = len(nums)
+        counter = defaultdict(int)                         #Stores frequency of each value = nums[i] - i . Default value = 0 (no need to check existence)
+        good_pairs = 0                                     #Keeps track of total valid (good) pairs
+        total_pairs = (n * (n-1)) // 2                     # Formula for total number of pairs
+        for i in range(n):
+            value = nums[i] - i                            #This is the core trick. Transforms the condition into a comparable value. If two indices have same key → they form a good pair.
+            good_pairs += counter[value]                   #How many times have I seen this key before? Each previous occurrence forms a pair with current index. If counter[value] = 3 → current element forms 3 new good pairs
+            counter[value] += 1                            #Record that this key has appeared again
+        
+        return total_pairs - good_pairs
+
+    Key points:
+     --> Instead of counting bad pairs directly (hard), we count good pairs (easy) where nums[i] - i == nums[j] - j
+     --> Use HashMap for Frequency
+     --> good_pairs += count[key] -- Each new element pairs with all previous same keys [ Combinational logic --  If a value appears k times: k * (k - 1) // 2]
+
+     REMEMBER: 
+              When you see pair problems:
+              -->Can I rewrite condition?
+              --> Can I convert it to:
+                  something(i) == something(j)
+              --> If YES → hashmap
+              --> If NO → maybe sorting / two pointers
