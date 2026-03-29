@@ -1,0 +1,46 @@
+Kadane’s Algorithm
+--> Kadane’s Algorithm is used to find the maximum sum of a contiguous subarray in a one-dimensional array, in linear time O(n).
+
+Core Idea:
+--> Instead of checking all possible subarrays (which is expensive), Kadane’s algorithm works by building the solution as it scans the array once.
+
+Process: 
+--> Maintain two variables:
+    current_sum → sum of the current subarray you are considering
+    max_sum → best (maximum) sum found so far
+--> Iterate through the array:
+        At each element, decide:
+          --> Should you extend the current subarray
+          --> OR start a new subarray from this element
+--> Decision rule:
+    --> If adding the current element improves current_sum, continue
+    --> If current_sum becomes worse than starting fresh, reset it
+--> Update global maximum:
+     After processing each element, compare:
+         max_sum = max(max_sum, current_sum)
+
+
+Key Insight:
+--> A negative running sum is harmful, because it will reduce any future sum
+--> So we discard it and restart
+
+
+Intuition (Important):
+Kadane’s is basically: 
+      “Carry forward profit, drop loss immediately.”
+
+It’s a greedy + dynamic programming hybrid:
+    --> Greedy → make best local decision
+    --> DP → reuse previous computation
+
+
+Complexity
+Time: O(n)
+Space: O(1)
+
+
+Pattern Recognition Cheat Sheet:
+    If question says:
+      “contiguous”
+      “subarray”
+      “maximum/minimum sum”
