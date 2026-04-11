@@ -83,3 +83,16 @@ Intuition — When to Use Binary Search -->
         If you see:
             n ≤ 10^5 or 10^9
         O(n) might pass, but O(log n) is chef’s kiss
+
+Tips
+  Always use:
+    mid = low + (high - low) // 2
+    avoids overflow (big deal in languages like Java/C++)
+  
+  Loop condition MUST be:
+    while low <= high
+    not <, or you’ll miss edge cases (classic trap 😭)
+  
+  Return value:
+    Index → when searching
+    low → for insert position problems
