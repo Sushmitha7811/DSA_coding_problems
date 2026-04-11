@@ -1,0 +1,85 @@
+
+Binary Search is a divide-and-conquer algorithm used to efficiently find a target value within a sorted search space.
+
+Process-->
+  Maintain two pointers:
+    low → start of the search space
+    high → end of the search space
+  Compute the middle index:
+    mid = low + (high - low) // 2
+  Compare the middle element with the target:
+    If equal → return result
+    If target is smaller → discard right half → move high
+    If target is larger → discard left half → move low
+  Repeat until:
+    Target is found
+  Search space becomes empty (low > high)
+
+Complexity-->
+  Time: O(log n)
+  Space:
+    Iterative → O(1)
+    {
+      def binary_search_iterative(arr, target):
+          low = 0
+          high = len(arr) - 1
+      
+          while low <= high:
+              mid = low + (high - low) // 2
+      
+              if arr[mid] == target:
+                  return mid
+              elif arr[mid] < target:
+                  low = mid + 1
+              else:
+                  high = mid - 1
+      
+          return -1  # target not found
+    }
+    
+    Recursive → O(log n) (stack)
+    {
+      def binary_search_recursive(arr, low, high, target):
+          if low > high:
+              return -1  # base case: not found
+      
+          mid = low + (high - low) // 2
+      
+          if arr[mid] == target:
+              return mid
+          elif arr[mid] < target:
+              return binary_search_recursive(arr, mid + 1, high, target)
+          else:
+              return binary_search_recursive(arr, low, mid - 1, target)
+
+      result = binary_search_recursive(arr, 0, len(arr) - 1, target)
+    }
+---------------------------------------------------------------------------------------------------
+Intuition — When to Use Binary Search -->
+  This is where most people mess up. It’s not just about “sorted array” — that’s level 1 thinking.
+  Signals you should use Binary Search:
+    1. Search Space is Sorted OR Can Be Sorted
+        Arrays, lists, or even implicit sorted spaces
+    2. Monotonic Behavior (VERY IMPORTANT)
+        If something behaves like:
+          FFFFFTTTTT
+            or
+          TTTTTFFFFF
+        That’s binary search screaming your name.
+        This means:
+            Once a condition becomes true, it stays true
+            Or once false, always false afterward
+    3. You’re Asked for:
+        Minimum / Maximum value
+        First / Last occurrence
+        Optimal answer under constraints
+    4. Search Space is NOT an Array
+        Binary search isn’t just for arrays 😏
+        You can binary search on:
+            Answer range (e.g., time, distance, capacity)
+            Floating numbers
+            Functions
+    5. Constraints are HUGE
+        If you see:
+            n ≤ 10^5 or 10^9
+        O(n) might pass, but O(log n) is chef’s kiss
