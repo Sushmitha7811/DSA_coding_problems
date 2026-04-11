@@ -1,0 +1,78 @@
+Question:
+  Given two binary strings a and b, return their sum as a binary string.
+
+Example 1:
+  Input: a = "11", b = "1"
+  Output: "100"
+
+Example 2:
+  Input: a = "1010", b = "1011"
+  Output: "10101"
+ 
+Constraints:
+  1 <= a.length, b.length <= 10^4
+  a and b consist only of '0' or '1' characters.
+  Each string does not contain leading zeros except for the zero itself.
+
+Code==>
+
+1. Using while loop==>
+                  class Solution:
+                      def addBinary(self, a: str, b: str) -> str:
+                          carry = 0
+                          res = ""
+                  
+                          i = len(a) - 1
+                          j = len(b) - 1
+                  
+                          while i>=0 or j>=0 or carry:
+                              total = carry
+                  
+                              if i>=0:
+                                  total += int(a[i])
+                                  i -= 1
+                              if j>=0:
+                                  total += int(b[j])
+                                  j -= 1
+                              
+                              res += str(total%2)
+                              carry = total//2
+                          
+                          return res[::-1]
+
+2. Using bin() in python
+                  [In Python, bin is a built-in function used to convert an integer to its binary representation as a string. 
+                    Key Features of bin()
+                    Syntax: bin(number) where number must be an integer.
+                    Return Value: It returns a string representing the binary equivalent, always prefixed with 0b (e.g., bin(10) returns '0b1010').
+                    Exceptions: Passing a non-integer (like a float) will raise a TypeError.]
+
+              class Solution:
+                    def addBinary(self, a: str, b: str) -> str:
+                        return bin(int(a,2)+int(b,2))[2:]
+
+3. Using zfill() in python
+
+        [ zfill() is a built-in string method used to pad a numeric string with leading zeros until it reaches a specified width
+          "42".zfill(5)  # Output: "00042"
+          "-42".zfill(5) # Output: "-0042"
+        ]
+
+               class Solution:
+                      def addBinary(self, a: str, b: str) -> str:
+                          n = max(len(a), len(b))
+                          a = a.zfill(n)
+                          b = b.zfill(n)
+                  
+                          carry = 0
+                          result = ""
+                  
+                          for i in range(n-1, -1, -1):
+                              total = int(a[i]) + int(b[i]) + carry
+                              result += str(total % 2)
+                              carry = total // 2
+                  
+                          if carry:
+                              result += "1"
+                  
+                          return result[::-1]
