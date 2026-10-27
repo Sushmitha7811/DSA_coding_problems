@@ -1,0 +1,47 @@
+# 1. First, what is recursion?
+Recursion is when a function calls itself.
+### Two important terms:
+Base case: The condition that stops recursion. Here, it's if n == 0.
+Recursive case: The part where the function calls itself. Here, it's countdown(n - 1).
+Without a base case, this function could keep calling itself until Python raises a **recursion-depth error**
+
+# 2. Now let's understand Fibonacci numbers
+The sequence follows these rules:
+- The first number is 0.
+- The second number is 1.
+- Every subsequent number is the sum of the previous two.
+So:
+    F(n)=F(n-1)+F(n-2)
+with base cases:
+    F(0)=0, F(1)=1
+For example:
+    F(4)=F(3)+F(2)=2+1=3
+
+# 3. Write our first recursive Fibonacci function
+def fib(n):
+    if n == 0:       
+        return 0    
+    if n == 1:        
+        return 1    
+    return fib(n - 1) + fib(n - 2)
+print(fib(4))
+
+Output: 3
+
+Let's break it down:
+- If n is 0, return 0.
+- If n is 1, return 1.
+- Otherwise, calculate the previous two Fibonacci numbers and add them.
+The function keeps breaking the problem down until it reaches the base cases.
+But wait — this code uses recursion, not yet an optimized DP solution.
+That's an important distinction. Recursion is a way to solve a problem; 
+Dynamic Programming is a technique that can make certain recursive solutions much more efficient.
+
+# 4. Why does the recursive solution waste time?
+Consider fib(5).
+It calls fib(4) and fib(3). But fib(4) also needs fib(3).
+So fib(3) gets calculated more than once!
+The repeated calls are the problem. Larger inputs create many more duplicates.
+
+Imagine calculating fib(35). 
+The plain recursive solution makes a huge number of function calls, despite there being only 36 distinct inputs from 0 through 35.
