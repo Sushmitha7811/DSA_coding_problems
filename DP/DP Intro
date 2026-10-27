@@ -1,0 +1,83 @@
+# What is dynamic programming?
+1. Imagine you're climbing stairs
+Suppose you have 5 stairs to climb.
+
+You can take either:
+- 1 step at a time
+- 2 steps at a time
+How many different ways can you reach the top?
+There are different ways to climb:
+Way 1
+1 + 1 + 1 + 1 + 1
+
+Way 2
+1 + 2 + 2
+
+Way 3
+2 + 1 + 2
+There are more combinations, too. The order matters: taking 1 step and then 2 is different from taking 2 and then 1.
+
+We want to count all the possible ways.
+At first, this looks like a simple math problem. But now imagine the staircase has 50 or 100 stairs. How can we count the possibilities efficiently?
+This is where Dynamic Programming can help.
+
+2. The most important observation
+Forget the 5 stairs for a moment. Imagine you're standing at the very top of a staircase.
+To reach the last stair, what could your final move have been?
+Possibility A: Take 1 step
+You must have been standing on the previous stair.
+Possibility B: Take 2 steps
+You must have been standing two stairs below the top.
+That's it! Those are the only two possibilities.
+
+So, to find the number of ways to reach stair 5:
+- Count the ways to reach stair 4.
+- Count the ways to reach stair 3.
+- Add those two counts.
+We can express this as: ways(5)=ways(4)+ways(3)
+
+And more generally: ways(n)=ways(n-1)+ways(n-2)
+
+Don't worry about memorizing this formula. The reasoning behind it is what matters.
+
+We solved a bigger problem by using answers to smaller problems. That's our first important DP idea.
+
+3. But why do we need Dynamic Programming?
+Let's calculate the number of ways to climb the stairs using the relationship we just discovered.
+
+Assume:
+- ways(1) = 1
+- ways(2) = 2
+Then:
+Stair	 Calculation   	Number of ways
+1	     Starting case     	1
+2	     Starting case     	2
+3	     1 + 2	            3
+4	     2 + 3	            5
+5	     3 + 5	            8
+6	     5 + 8            	13
+
+Therefore, there are 8 different ways to climb 5 stairs.
+Now here's the interesting part.
+Imagine writing a recursive function that calculates ways(5) by repeatedly calculating ways(4) and ways(3), and each of those calculates smaller values again.
+The same smaller problems appear multiple times as recursion continues.
+Notice that ways(3) and ways(2) are calculated repeatedly.
+For 5 stairs, this isn't a big deal. But for 40 stairs, a basic recursive solution performs a huge amount of repeated work.
+That's wasteful.
+
+Dynamic Programming solves this problem by remembering answers we've already calculated.
+For example, once we know ways(3) = 3, we save that answer. The next time we need it, we reuse 3 instead of calculating it all over again.
+
+Think of it like this:
+- Without DP: solve the same math question again every time it appears.
+- With DP: solve it once, write the answer in a notebook, and look it up whenever needed.
+That notebook is the key idea behind DP.
+
+# So, what exactly is Dynamic Programming?
+Dynamic Programming (DP) is a technique for solving problems by breaking them into smaller subproblems and storing their answers so we can reuse them instead of solving them repeatedly.
+
+Two things are especially important:
+1. Smaller subproblems: The big problem can be solved using smaller versions of itself.
+2. Reuse of answers: The same subproblems occur repeatedly, so storing their results saves work.
+A problem having smaller subproblems alone does not automatically mean DP is useful. The reuse of overlapping subproblems is a major clue.
+
