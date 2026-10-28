@@ -1,0 +1,97 @@
+# What is Memoization?
+Memoization means storing the result of a function call so that the next time we need the same result, we can reuse it.
+
+-------------------------------------------------------------------------------------------------------
+Let's add a dictionary called memo to our Fibonacci function.
+def fib(n, memo=None):
+    if memo is None:
+        memo = {}
+
+    if n in memo:
+        return memo[n]
+
+    if n == 0:
+        return 0
+
+    if n == 1:
+        return 1
+
+    memo[n] = fib(n - 1, memo) + fib(n - 2, memo)
+    return memo[n]
+
+
+print(fib(5))   # 5
+print(fib(10))  # 55
+
+--------------------------------------------------------------------------------------------------------
+For fib(5), memoization calculates each distinct Fibonacci input only once. The time complexity drops from exponential time for plain recursion to (O(n)), with (O(n)) additional space for the memo and recursive calls.
+
+One small but important implementation detail: we used memo=None instead of memo={} as the default argument. This avoids sharing one mutable dictionary across separate calls.
+# Recursion + memoization = Top-down DP
+This approach starts with the big problem, then works down to smaller problems as needed, saving answers along the way.
+
+You now know three important ideas:
+- Recursion: A function calls itself to solve smaller versions of a problem.
+- Memoization: Save answers to avoid repeating calculations.
+- Top-down DP: Start with the big problem, recursively solve smaller problems, and cache the results.
+One important distinction to keep in mind: recursion alone is not DP, and memoization is not the only way to implement DP.
+
+
+
+#### Now let's learn the other major approach: tabulation.
+We'll use the same Fibonacci problem so you can see exactly how it differs from memoization.
+
+# What does tabulation mean?
+Tabulation uses the same idea of storing answers, but instead of starting with the big problem and recursively working down, we start with the smallest problems and build upward until we reach the answer we need.
+
+-----------------------------------------------------------------------------------------------------
+def fib(n):
+    if n <= 1:
+        return n
+
+    dp = [0] * (n + 1)
+
+    dp[0] = 0
+    dp[1] = 1
+
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+
+    return dp[n]
+
+
+print(fib(5))   # 5
+print(fib(6))   # 8
+print(fib(10))  # 55
+---------------------------------------------------------------------------------------------------------
+
+Note:-  Create the table -- dp = [0] * (n + 1)
+        Suppose n = 5.
+        This creates a list of six zeroes: [0, 0, 0, 0, 0, 0]
+        Why six? Because we need indices 0, 1, 2, 3, 4, 5 — that's n + 1 positions.
+        In Python, list indices start at zero.
+
+
+### -----------------------------------------------------------------------------------------------------
+
+For Fibonacci, both approaches take (O(n)) time and typically use (O(n)) space.
+Neither approach is universally better. 
+Memoization can be convenient when only some subproblems are needed, while tabulation avoids recursive call overhead and makes the order of computation explicit.
+
+----------------------------------------------------------------------------------------------------------
+# A final improvement: Can we avoid storing the whole table?
+For Fibonacci, each new value depends only on the previous two values. We don't actually need all the older values.
+def fib(n):
+    if n <= 1:
+        return n
+
+    prev2 = 0
+    prev1 = 1
+
+    for i in range(2, n + 1):
+        current = prev1 + prev2
+        prev2 = prev1
+        prev1 = current
+
+    return prev1
+This version still uses the bottom-up DP idea, but reduces extra space from (O(n)) to (O(1)).
